@@ -1,12 +1,12 @@
 import random
 import json
 import os
+import ObjectMgr
 
 from pico2d import *
 
 import game_framework
-import title_state
-
+import Player
 
 
 name = "MainState"
@@ -14,45 +14,20 @@ name = "MainState"
 boy = None
 grass = None
 font = None
+m_ObjectMgr = None
 
-
-
-class Grass:
+class Font:
     def __init__(self):
-        self.image = load_image('grass.png')
+        self.image = load_image('paused.png')
 
     def draw(self):
-        self.image.draw(400, 30)
-
-
-
-class Boy:
-    def __init__(self):
-        self.x, self.y = 0, 90
-        self.frame = 0
-        self.image = load_image('run_animation.png')
-        self.dir = 1
-
-    def update(self):
-        self.frame = (self.frame + 1) % 8
-        self.x += self.dir
-        if self.x >= 800:
-            self.dir = -1
-        elif self.x <= 0:
-            self.dir = 1
-
-    def draw(self):
-        self.image.clip_draw(self.frame * 100, 0, 100, 100, self.x, self.y)
+        self.image.draw(400, 300)
 
 
 def enter():
-    global  boy
-    global  grass
-
-    boy = Boy()
-    grass = Grass()
-    pass
-
+    global m_ObjectMgr
+    m_ObjectMgr = ObjectMgr.CObjectMgr()
+    m_ObjectMgr.Add_Object('Player', Player.CPlayer())
 
 def exit():
     pass
@@ -67,26 +42,17 @@ def resume():
 
 
 def handle_events():
-    events = get_events()
-    for event in get_events()
-        for event in events:
-            if (event.type, event.key)
-                game_framework.quit()
-            else:
-                if(event.type,event.key)==
+   events = get_events()
+   for event in events:
+       if event.type == SDL_QUIT:
+           game_framework.quit()
 
 
 def update():
-    boy.update()
+    m_ObjectMgr.Update_Object()
 
 
 def draw():
     clear_canvas()
-    boy.draw()
-    grass.draw()
+    m_ObjectMgr.Draw_Object()
     update_canvas()
-
-
-
-
-
