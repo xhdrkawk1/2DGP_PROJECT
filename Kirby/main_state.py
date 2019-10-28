@@ -3,14 +3,18 @@ import json
 import os
 
 from pico2d import *
-
+import Stage1
 import game_framework
 import pause_state
 import Player
+import PlayerHp
+
 
 name = "MainState"
 
 m_Player = None
+m_PlayerHp = None
+m_Stage1 =None
 grass = None
 font = None
 
@@ -25,7 +29,7 @@ class Font:
 
 class Grass:
     def __init__(self):
-        self.image = load_image('grass.png')
+        self.image = load_image('Texture/Stage1.png')
 
     def draw(self):
         self.image.draw(400, 30)
@@ -51,15 +55,17 @@ class Boy:
 
 
 def enter():
-    global boy, grass, m_Player
-    boy = Boy()
-    grass = Grass()
+    global m_Player, m_Stage1,m_PlayerHp
+    m_Stage1 = Stage1.CStage1()
     m_Player = Player.CPlayer()
+    m_PlayerHp = PlayerHp.CPlayerHp()
 
 def exit():
-    global boy, grass, m_Player
+    global m_Player,m_Stage1,m_PlayerHp
 
     del(m_Player)
+    del(m_Stage1)
+    del(m_PlayerHp)
 
 
 def pause():
@@ -82,10 +88,12 @@ def handle_events():
 
 def update():
     m_Player.update()
-    delay(0.1)
+    m_PlayerHp.update()
+    delay(0.015)
 
 def draw():
     clear_canvas()
-    grass.draw()
+    m_Stage1.draw()
     m_Player.draw()
+    m_PlayerHp.draw()
     update_canvas()
