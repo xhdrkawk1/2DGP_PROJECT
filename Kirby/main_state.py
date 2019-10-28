@@ -5,7 +5,6 @@ import os
 from pico2d import *
 import Stage1
 import game_framework
-import pause_state
 import Player
 import PlayerHp
 
@@ -58,6 +57,7 @@ def enter():
     global m_Player, m_Stage1,m_PlayerHp
     m_Stage1 = Stage1.CStage1()
     m_Player = Player.CPlayer()
+    m_Player.enter()
     m_PlayerHp = PlayerHp.CPlayerHp()
 
 def exit():
@@ -94,6 +94,6 @@ def update():
 def draw():
     clear_canvas()
     m_Stage1.draw()
-    m_Player.draw()
     m_PlayerHp.draw()
+    m_Player.draw()
     update_canvas()

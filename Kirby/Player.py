@@ -1,6 +1,10 @@
 from pico2d import *
 import Struct
 import win32api
+import PlayerState
+
+m_PlayerState = None
+
 
 class CPlayer:
     def __init__(self):
@@ -22,6 +26,8 @@ class CPlayer:
                        Struct.CAniDate(0,3,5),'BALLON': Struct.CAniDate(0,12,7),'FBALLON':Struct.CAniDate(0,2,8)}
 
     def enter(self):
+        global m_PlayerState
+        m_PlayerState = PlayerState.CPlayerState()
         pass
 
     def update(self):
@@ -37,6 +43,8 @@ class CPlayer:
              self.imageRight.clip_draw(self.frame * 128, 2048-(self.AniLst[self.CurAni].AniNumber+1)*128, 128, 128, self.x, self.y)
         else:
              self.imageLeft.clip_draw((2048-128)-(self.frame * 128), 2048 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x, self.y)
+
+        m_PlayerState.draw()
 
     def AniMationCheck(self):
         if self.CurAni!= self.PreAni:
