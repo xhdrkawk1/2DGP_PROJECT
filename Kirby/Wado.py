@@ -1,6 +1,6 @@
 from pico2d import *
 import Struct
-
+import main_state
 
 
 class CWado:
@@ -18,21 +18,24 @@ class CWado:
         self.y = y
         self.pointx1 = 0
         self.pointx2 = 0
+        self.m_bisDead = 0
         self.pointy = 0
         self.frame = 0
         self.Maxframe = 7
+        self.SizeX = 128
+        self.SizeY = 128
         self.CurAni = 'RUN'
         self.LineLst = [Struct.CLinePos(-30,120,800,120,0)]
         self.AniLst = {'RUN': Struct.CAniDate(0,7,0),'DAMAGE': Struct.CAniDate(0,7,1),'FLY':Struct.CAniDate(0,0,2)}
         self.m_Rect = Struct.CRect(64,64,self.x,self.y)
         self.Collision = False
-        self.m_bisDie = False;
+        self.m_bisdie = False;
     def draw(self):
         if self.dir == 0:
             CWado.ImageR.clip_draw((int)(self.frame) * 128, 384 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,
-                                      self.x, self.y)
+                                      self.x, self.y,self.SizeX,self.SizeY)
         else:
-            CWado.ImageL.clip_draw((1024 - 128) - ((int)(self.frame) * 128), 384-(self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x, self.y)
+            CWado.ImageL.clip_draw((1024 - 128) - ((int)(self.frame) * 128), 384-(self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x, self.y,self.SizeX,self.SizeY)
 
     def enter(self):
         global  m_Rect
@@ -75,15 +78,28 @@ class CWado:
                 self.dir=0
 
         self.Collision = False
-
+        self.Drain()
+        return self.m_bisDead
     def MoveFrame(self):
         self.frame = self.frame + 0.3
         if(self.frame>self.Maxframe):
             self.frame = 0
 
     def Drain(self):
-        if self.m_bisDie==True:
+        if self.m_bisdie==True:
+            self.SizeY = self.SizeY-(self.SizeY*0.02)
+            self.SizeX = self.SizeX - (self.SizeX * 0.02)
             self.CurAni = 'FLY'
+            self.Maxframe = 0
+            TempLst = main_state.m_ObjectMgr.Get_ObjectList('PLAYER')
+            PlayerX =TempLst[0].x
+            self.x = self.x+(PlayerX-self.x)*0.1
+            if((PlayerX-self.x)<10):
+                TempLst[0].CurAni = 'IDLE'
+                self.m_bisDead=True
+
+
+
 
 
 

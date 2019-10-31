@@ -23,6 +23,7 @@ class CPlayer:
         self.PreAni ='DOWN'
         self.AniStop =False
         self.CurAni ='IDLE'
+        self.m_bisDead=0
         self.m_bisDamaged = False
         self.AniLst = {'IDLE' : Struct.CAniDate(0,7,0),'DOWN': Struct.CAniDate(0,7,1),'WALK':Struct.CAniDate(0,9,2),'JUMP':Struct.CAniDate(0,8,4),'BLOW':Struct.CAniDate(0,13,12),'FJUMP':
                        Struct.CAniDate(0,3,5),'BALLON': Struct.CAniDate(0,12,7),'FBALLON':Struct.CAniDate(0,2,8),'DAMAGED':Struct.CAniDate(0,8,9),'DRAIN':Struct.CAniDate(0,15,13)}
@@ -44,13 +45,14 @@ class CPlayer:
         self.m_Rect.update(self.x, self.y)
         self.CollisionMonster()
         self.m_bisDamaged=False
+        return self.m_bisDead
     def draw(self):
         if self.dir== 0:
              self.imageRight.clip_draw((int)(self.frame) * 128, 2048-(self.AniLst[self.CurAni].AniNumber+1)*128, 128, 128, self.x, self.y)
         else:
              self.imageLeft.clip_draw((2048-128)-((int)(self.frame) * 128), 2048 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x, self.y)
 
-
+        m_PlayerState.draw()
 
     def AniMationCheck(self):
         if self.CurAni!= self.PreAni:
@@ -60,7 +62,7 @@ class CPlayer:
         self.PreAni=self.CurAni
 
     def Key_Input(self):
-        if self.CurAni =='DAMAGED':
+        if self.CurAni =='DAMAGED' or self.CurAni == 'DRAIN':
             return
         if self.CurAni == 'BALLON' and win32api.GetAsyncKeyState(0x41) & 0x8000 and self.PreAni == 'BALLON':
             self.CurAni = 'FBALLON'
@@ -174,7 +176,7 @@ class CPlayer:
 
         TempLst = main_state.m_ObjectMgr.Get_ObjectList('MONSTER')
         for n in TempLst:
-            if(Struct.CollisionRect(self.m_Rect, n.m_Rect)):
+            if(Struct.CollisionRect(self.m_Rect, n.m_Rect) and n.m_bisdie==False):
                 self.CurAni = 'DAMAGED'
                 self.frame = 0
                 n.Collision = True
@@ -182,11 +184,14 @@ class CPlayer:
                 for n2 in TempLst2:
                     n2.change()
 
-        if(self.CurAni == 'BLOW'and self.frame<9):
+        if(self.CurAni == 'BLOW'and self.frame < 11):
              for n in TempLst:
-                 if(dir==0 and self.x> n.x and Struct.CollisionDist(self.x,n.x,self.y,n.y)):
+                 if(self.dir==0 and self.x< n.x ):
                      self.CurAni = 'DRAIN'
-
+                     n.m_bisdie = True
+                 if(self.dir == 1 and self.x > n.x):
+                     self.CurAni = 'DRAIN'
+                     n.m_bisdie = True
 
 
 

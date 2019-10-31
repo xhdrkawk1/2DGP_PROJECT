@@ -7,8 +7,12 @@ class CObjectMgr:
 
     def Update_Object(self):
         for index in self.ObjLst:
+            count = 0
             for index2 in self.ObjLst[index]:
-                index2.update()
+             n= index2.update()
+
+
+
 
     def Draw_Object(self):
         for index in self.ObjLst:
