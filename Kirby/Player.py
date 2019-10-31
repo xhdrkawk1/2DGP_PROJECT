@@ -13,7 +13,7 @@ class CPlayer:
         self.MaxFrame = 0
         self.imageRight = load_image('Texture/Kirby.png')
         self.imageLeft = load_image('Texture/KirbyL.png')
-        self.LineLst = [Struct.CLinePos(-30,120,500,120,0)]
+        self.LineLst = [Struct.CLinePos(-30,120,800,120,0)]
         self.dir = 1
         self.fSpeed = 10
         self.fGravity = 20

@@ -11,6 +11,8 @@ class CStage1:
         self.backGroundImage.draw(400,300)
         self.Image.clip_draw(10,60,200,150,400,300,800,600)
 
+    def update(self):
+        pass
 
 
 

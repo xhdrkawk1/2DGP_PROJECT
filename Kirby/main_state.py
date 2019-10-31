@@ -7,15 +7,15 @@ import Stage1
 import game_framework
 import Player
 import PlayerHp
-
+import ObjectMgr
+import Wado
 
 name = "MainState"
 
-m_Player = None
-m_PlayerHp = None
-m_Stage1 =None
-grass = None
+
+
 font = None
+m_ObjectMgr = None
 
 
 class Font:
@@ -54,18 +54,28 @@ class Boy:
 
 
 def enter():
-    global m_Player, m_Stage1,m_PlayerHp
-    m_Stage1 = Stage1.CStage1()
+    global  m_ObjectMgr
+    m_ObjectMgr = ObjectMgr.CObjectMgr()
     m_Player = Player.CPlayer()
     m_Player.enter()
+    m_ObjectMgr.Add_Object('PLAYER', m_Player)
+
+    m_Stage1 = Stage1.CStage1()
+    m_ObjectMgr.Add_Object('MAP', m_Stage1)
+
     m_PlayerHp = PlayerHp.CPlayerHp()
+    m_ObjectMgr.Add_Object('UI', m_PlayerHp)
+
+    m_Wado =Wado.CWado(100,120)
+    m_Wado.enter()
+    m_ObjectMgr.Add_Object('MONSTER',m_Wado)
+
+
 
 def exit():
-    global m_Player,m_Stage1,m_PlayerHp
+    global m_Player,m_Stage1,m_PlayerHp,m_ObjectMgr
 
-    del(m_Player)
-    del(m_Stage1)
-    del(m_PlayerHp)
+    del(m_ObjectMgr)
 
 
 def pause():
@@ -81,19 +91,15 @@ def handle_events():
    for event in events:
        if event.type == SDL_QUIT:
            game_framework.quit()
-       elif event.type == SDL_KEYDOWN and event.key == SDLK_p:
-            game_framework.push_state(pause_state)
+
 
 
 
 def update():
-    m_Player.update()
-    m_PlayerHp.update()
+    m_ObjectMgr.Update_Object()
     delay(0.015)
 
 def draw():
     clear_canvas()
-    m_Stage1.draw()
-    m_PlayerHp.draw()
-    m_Player.draw()
+    m_ObjectMgr.Draw_Object()
     update_canvas()
