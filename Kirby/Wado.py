@@ -81,6 +81,9 @@ class CWado:
         if(self.frame>self.Maxframe):
             self.frame = 0
 
-    def Drain(self,x,y):
-        if self.m_bisDie==True :
-            
+    def Drain(self):
+        if self.m_bisDie==True:
+            self.CurAni = 'FLY'
+
+
+

@@ -1,5 +1,5 @@
 from pico2d import *
-
+import math
 
 class CAniDate:
        def __init__(self, x, y,index):
@@ -33,3 +33,7 @@ def CollisionRect(R1,R2):
 
      return False
 
+def CollisionDist(x1,x2,y1,y2,Range):
+    if math.sqrt((x1-x2)**2+(y1-y2)**2 < Range):
+        return True
+    return False

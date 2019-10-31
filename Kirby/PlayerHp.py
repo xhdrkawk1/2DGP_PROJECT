@@ -14,3 +14,6 @@ class CPlayerHp:
     def update(self):
         if win32api.GetAsyncKeyState(0x47) & 0x8000:
             self.PlayerHp = self.PlayerHp-1
+
+    def change(self):
+        self.PlayerHp = self.PlayerHp - 1

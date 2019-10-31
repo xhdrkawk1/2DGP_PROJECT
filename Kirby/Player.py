@@ -14,7 +14,7 @@ class CPlayer:
         self.MaxFrame = 0
         self.imageRight = load_image('Texture/Kirby.png')
         self.imageLeft = load_image('Texture/KirbyL.png')
-        self.LineLst = [Struct.CLinePos(-30,120,800,120,0)]
+        self.LineLst = [Struct.CLinePos(-60,120,800,120,0)]
         self.dir = 1
         self.fSpeed = 10
         self.fGravity = 20
@@ -25,7 +25,7 @@ class CPlayer:
         self.CurAni ='IDLE'
         self.m_bisDamaged = False
         self.AniLst = {'IDLE' : Struct.CAniDate(0,7,0),'DOWN': Struct.CAniDate(0,7,1),'WALK':Struct.CAniDate(0,9,2),'JUMP':Struct.CAniDate(0,8,4),'BLOW':Struct.CAniDate(0,13,12),'FJUMP':
-                       Struct.CAniDate(0,3,5),'BALLON': Struct.CAniDate(0,12,7),'FBALLON':Struct.CAniDate(0,2,8),'DAMAGED':Struct.CAniDate(0,8,9)}
+                       Struct.CAniDate(0,3,5),'BALLON': Struct.CAniDate(0,12,7),'FBALLON':Struct.CAniDate(0,2,8),'DAMAGED':Struct.CAniDate(0,8,9),'DRAIN':Struct.CAniDate(0,15,13)}
         self.m_Rect = Struct.CRect(128, 128, self.x, self.y)
 
     def enter(self):
@@ -50,7 +50,7 @@ class CPlayer:
         else:
              self.imageLeft.clip_draw((2048-128)-((int)(self.frame) * 128), 2048 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x, self.y)
 
-        m_PlayerState.draw()
+
 
     def AniMationCheck(self):
         if self.CurAni!= self.PreAni:
@@ -121,7 +121,7 @@ class CPlayer:
                              self.y = fLineClimb*self.x+fB
                        break
                 else:
-                    if self.y <lineIndex.p1y :
+                    if self.y <lineIndex.p1y:
                      self.y = lineIndex.p1y
                      if self.m_bisJump == True:
                          self.m_bisJump = False
@@ -178,6 +178,18 @@ class CPlayer:
                 self.CurAni = 'DAMAGED'
                 self.frame = 0
                 n.Collision = True
+                TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
+                for n2 in TempLst2:
+                    n2.change()
+
+        if(self.CurAni == 'BLOW'and self.frame<9):
+             for n in TempLst:
+                 if(dir==0 and self.x> n.x and Struct.CollisionDist(self.x,n.x,self.y,n.y)):
+                     self.CurAni = 'DRAIN'
+
+
+
+
 
 
 
