@@ -2,6 +2,7 @@ from pico2d import *
 import Struct
 
 
+
 class CWado:
     ImageL = None
     ImageR = None
@@ -22,17 +23,19 @@ class CWado:
         self.Maxframe = 7
         self.CurAni = 'RUN'
         self.LineLst = [Struct.CLinePos(-30,120,800,120,0)]
-        self.AniLst = {'RUN':Struct.CAniDate(0,7,0),'DAMAGE':Struct.CAniDate(0,7,1)}
-
-
+        self.AniLst = {'RUN': Struct.CAniDate(0,7,0),'DAMAGE': Struct.CAniDate(0,7,1),'FLY':Struct.CAniDate(0,0,2)}
+        self.m_Rect = Struct.CRect(64,64,self.x,self.y)
+        self.Collision = False
+        self.m_bisDie = False;
     def draw(self):
         if self.dir == 0:
-            CWado.ImageR.clip_draw(self.frame * 128, 384 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,
+            CWado.ImageR.clip_draw((int)(self.frame) * 128, 384 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,
                                       self.x, self.y)
         else:
-            CWado.ImageL.clip_draw((1024 - 128) - (self.frame * 128), 384-(self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x, self.y)
+            CWado.ImageL.clip_draw((1024 - 128) - ((int)(self.frame) * 128), 384-(self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x, self.y)
 
     def enter(self):
+        global  m_Rect
         for lineIndex in self.LineLst:
             if lineIndex.p1x < self.x and lineIndex.p2x > self.x:
                 self.pointx1 = lineIndex.p1x
@@ -51,7 +54,7 @@ class CWado:
                 self.dir = 1
         else:
             self.x = self.x -1
-            if self.x < self.pointx2:
+            if self.x < self.pointx1:
                 self.x = self.pointx1
                 self.dir = 0
 
@@ -63,9 +66,21 @@ class CWado:
     def update(self):
         self.MoveFrame()
         self.MoveWade()
+        self.m_Rect.update(self.x, self.y)
 
+        if self.Collision==True :
+            if(self.dir==0):
+                self.dir=1
+            else:
+                self.dir=0
+
+        self.Collision = False
 
     def MoveFrame(self):
-        self.frame = (int)(self.frame + 1)
+        self.frame = self.frame + 0.3
         if(self.frame>self.Maxframe):
             self.frame = 0
+
+    def Drain(self,x,y):
+        if self.m_bisDie==True :
+            

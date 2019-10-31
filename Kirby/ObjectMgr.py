@@ -21,3 +21,5 @@ class CObjectMgr:
     def Remove_Object(self, _Key, Index):
          self.ObjLst[_Key].remove(Index)
 
+    def Get_ObjectList(self,_Key):
+        return self.ObjLst[_Key]
