@@ -186,10 +186,10 @@ class CPlayer:
 
         if(self.CurAni == 'BLOW'and self.frame < 11):
              for n in TempLst:
-                 if(self.dir==0 and self.x< n.x ):
+                 if self.dir==0 and self.x< n.x :
                      self.CurAni = 'DRAIN'
                      n.m_bisdie = True
-                 if(self.dir == 1 and self.x > n.x):
+                 if self.dir == 1 and self.x > n.x :
                      self.CurAni = 'DRAIN'
                      n.m_bisdie = True
 
