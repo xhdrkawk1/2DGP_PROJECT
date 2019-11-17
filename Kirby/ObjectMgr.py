@@ -3,13 +3,15 @@ import game_framework
 
 class CObjectMgr:
     def __init__(self):
-        self.ObjLst = {'MAP': [], 'MONSTER':[] ,'PLAYER': [], 'UI': []}
+        self.ObjLst = {'MAP': [], 'PLAYER': [],'MONSTER':[] , 'UI': []}
 
     def Update_Object(self):
         for index in self.ObjLst:
             count = 0
             for index2 in self.ObjLst[index]:
              n= index2.update()
+             if(n == True):
+                 self.ObjLst[index].remove(index2)
 
 
 

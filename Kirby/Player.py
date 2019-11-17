@@ -14,7 +14,7 @@ class CPlayer:
         self.MaxFrame = 0
         self.imageRight = load_image('Texture/Kirby.png')
         self.imageLeft = load_image('Texture/KirbyL.png')
-        self.LineLst = [Struct.CLinePos(-60,120,800,120,0)]
+        self.LineLst = [Struct.CLinePos(-60,120,400,120,0),Struct.CLinePos(400,180,800,180,0)]
         self.dir = 1
         self.fSpeed = 10
         self.fGravity = 20
@@ -114,24 +114,33 @@ class CPlayer:
 
 
     def LineCollision(self):
+        count = 0
+        Finish = False
         for lineIndex in self.LineLst:
+            if Finish == True:
+                return
+            count = count +1
             if (int(lineIndex.p1y) <= int(self.x)) and lineIndex.p2x >= int(self.x):
-                if(float(lineIndex.p2y - lineIndex.p1y)!=0):
-                       fLineClimb = float(lineIndex.p2y - lineIndex.p1y)/ float(lineIndex.p2x - lineIndex.p1x)
-                       fB = lineIndex.p1y-lineIndex.p1x*fLineClimb
-                       if self.m_bisJump == False :
-                             self.y = fLineClimb*self.x+fB
-                       break
+                Finish=True
+                print(count)
+                if(self.m_bisJump==False and self.y+30<lineIndex.p1y):
+                 if(self.x <(lineIndex.p2x-lineIndex.p1x)/2+lineIndex.p1x): #중점보다크면
+                    self.x = lineIndex.p1x
+                 else:
+                    self.x = lineIndex.p2x
+                elif(self.m_bisJump==False):
+                    self.y =lineIndex.p1y
+
+
                 else:
-                    if self.y <lineIndex.p1y:
-                     self.y = lineIndex.p1y
-                     if self.m_bisJump == True:
-                         self.m_bisJump = False
-                         self.fJumpAcc = 1.5
-                         self.AniStop = False
-                         self.CurAni = 'FJUMP'
-                         self.frame =0
-                     break
+                    if (int(lineIndex.p1y) <= int(self.x)) and lineIndex.p2x >= int(self.x) and self.y <lineIndex.p1y:
+                        self.y = lineIndex.p1y
+                        self.m_bisJump = False
+                        self.fJumpAcc = 1.5
+                        self.AniStop = False
+                        self.CurAni = 'FJUMP'
+                        self.frame =0
+
 
 
 
@@ -186,10 +195,10 @@ class CPlayer:
 
         if(self.CurAni == 'BLOW'and self.frame < 11):
              for n in TempLst:
-                 if self.dir==0 and self.x< n.x :
+                 if self.dir==0 and self.x< n.x  and Struct.CollisionDist(self.x,n.x,self.y,n.y,200):
                      self.CurAni = 'DRAIN'
                      n.m_bisdie = True
-                 if self.dir == 1 and self.x > n.x :
+                 if self.dir == 1 and self.x > n.x and Struct.CollisionDist(self.x,n.x,self.y,n.y,200):
                      self.CurAni = 'DRAIN'
                      n.m_bisdie = True
 
