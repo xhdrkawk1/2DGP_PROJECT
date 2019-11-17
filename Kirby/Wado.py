@@ -94,9 +94,10 @@ class CWado:
             TempLst = main_state.m_ObjectMgr.Get_ObjectList('PLAYER')
             PlayerX =TempLst[0].x
             self.x = self.x+(PlayerX-self.x)*0.1
-            if((PlayerX-self.x)<10):
+            if(math.sqrt((PlayerX-self.x)**2)<10):
                 TempLst[0].CurAni = 'IDLE'
-                self.m_bisDead=True
+                TempLst[0].Eating = True
+                self.m_bisDead = True
 
 
 

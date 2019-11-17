@@ -3,6 +3,7 @@ import Struct
 import win32api
 import PlayerState
 import main_state
+import EatPlayer
 
 m_PlayerState = None
 
@@ -16,6 +17,7 @@ class CPlayer:
         self.imageLeft = load_image('Texture/KirbyL.png')
         self.LineLst = [Struct.CLinePos(-60,120,400,120,0),Struct.CLinePos(400,180,800,180,0)]
         self.dir = 1
+        self.Eating =False
         self.fSpeed = 10
         self.fGravity = 20
         self.fJumpAcc = 1.5
@@ -45,6 +47,13 @@ class CPlayer:
         self.m_Rect.update(self.x, self.y)
         self.CollisionMonster()
         self.m_bisDamaged=False
+        if(self.Eating == True):
+            self.m_bisDead=True
+            m_Player = EatPlayer.CEatPlayer(self.x,self.y,self.dir)
+            m_Player.enter()
+            main_state.m_ObjectMgr.Add_Object('PLAYER', m_Player)
+
+
         return self.m_bisDead
     def draw(self):
         if self.dir== 0:
