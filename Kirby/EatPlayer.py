@@ -1,8 +1,10 @@
 from pico2d import *
+import  Star
 import Struct
 import win32api
 import PlayerState
 import main_state
+import Player
 
 m_PlayerState = None
 
@@ -14,7 +16,7 @@ class CEatPlayer:
         self.MaxFrame = 3
         self.imageRight = load_image('Texture/EatKirbyR.png')
         self.imageLeft = load_image('Texture/EatKirbyL.png')
-        self.LineLst = [Struct.CLinePos(-60, 120, 400, 120, 0), Struct.CLinePos(400, 180, 800, 180, 0)]
+        self.LineLst = [Struct.CLinePos(-60, 120, 520, 120, 0), Struct.CLinePos(520, 230, 800, 230, 0)]
         self.dir = dira
         self.Eating = False
         self.fSpeed = 10
@@ -26,8 +28,9 @@ class CEatPlayer:
         self.CurAni = 'IDLE'
         self.m_bisDead = 0
         self.m_bisDamaged = False
+        self.m_bisShoot  =False
         self.AniLst = {'IDLE': Struct.CAniDate(0, 3, 0), 'DOWN': Struct.CAniDate(0, 5, 1),
-                       'WALK': Struct.CAniDate(0, 15, 3), 'JUMP': Struct.CAniDate(0, 4, 4),'FJUMP':Struct.CAniDate(0, 2, 5)}
+                       'WALK': Struct.CAniDate(0, 15, 3), 'JUMP': Struct.CAniDate(0, 4, 4),'SHOOT':Struct.CAniDate(0, 4, 6),'FJUMP':Struct.CAniDate(0, 2, 5)}
         self.m_Rect = Struct.CRect(128, 128, self.x, self.y)
 
     def enter(self):
@@ -39,6 +42,7 @@ class CEatPlayer:
 
         self.Key_Input()
         self.AniMationCheck()
+        self.Shooting()
         self.Frame_Check()
         self.Move_Check()
         self.Jumping()
@@ -66,7 +70,7 @@ class CEatPlayer:
         self.PreAni = self.CurAni
 
     def Key_Input(self):
-        if self.CurAni != 'JUMP':
+        if self.CurAni != 'JUMP'and self.CurAni != 'SHOOT':
          self.CurAni = 'IDLE'
         else :
           return
@@ -83,11 +87,20 @@ class CEatPlayer:
             if self.CurAni != 'JUMP':
                 self.CurAni = 'JUMP'
                 self.m_bisJump = True
+        if win32api.GetAsyncKeyState(0x41) & 0x8000:
+            if self.CurAni !='JUMP' and self.CurAni != 'SHOOT':
+                self.CurAni = 'SHOOT'
+
 
     def Frame_Check(self):
         if self.AniStop == False:
             self.frame = (self.frame + 0.3)
         if (self.frame > self.MaxFrame):
+                if(self.CurAni =='SHOOT'):
+                    self.m_bisDead =True
+                    m_Player = Player.CPlayer(self.x, self.y,self.dir)
+                    m_Player.enter()
+                    main_state.m_ObjectMgr.Add_Object('PLAYER', m_Player)
                 self.frame = 0
 
     def LineCollision(self):
@@ -134,6 +147,7 @@ class CEatPlayer:
                 self.fJumpAcc = self.fJumpAcc + 1.0
                 self.y = self.y + (self.fGravity - self.fJumpAcc)
 
+
     def CollisionMonster(self):
         TempLst = main_state.m_ObjectMgr.Get_ObjectList('MONSTER')
         for n in TempLst:
@@ -143,8 +157,14 @@ class CEatPlayer:
                 n.Collision = True
                 TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
                 for n2 in TempLst2:
-                    n2.change()
-
+                   n2.change()
+    def Shooting(self):
+        if(self.CurAni =='SHOOT'):
+            if(self.frame >=2 and self.m_bisShoot ==False):
+                self.m_bisShoot = True
+                m_Star = Star.CStar(self.x, self.y, self.dir)
+                m_Star.enter()
+                main_state.m_ObjectMgr.Add_Object('BULLET', m_Star)
 
 
 

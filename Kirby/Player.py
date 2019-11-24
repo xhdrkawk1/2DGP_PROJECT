@@ -9,14 +9,14 @@ m_PlayerState = None
 
 
 class CPlayer:
-    def __init__(self):
-        self.x, self.y = 200, 120
+    def __init__(self,x,y,dir):
+        self.x, self.y = x, y
         self.frame = 0
         self.MaxFrame = 0
         self.imageRight = load_image('Texture/Kirby.png')
         self.imageLeft = load_image('Texture/KirbyL.png')
-        self.LineLst = [Struct.CLinePos(-60,120,400,120,0),Struct.CLinePos(400,180,800,180,0)]
-        self.dir = 1
+        self.LineLst = [Struct.CLinePos(-60, 120, 520, 120, 0), Struct.CLinePos(520, 230, 800, 230, 0)]
+        self.dir = dir
         self.Eating =False
         self.fSpeed = 10
         self.fGravity = 20
@@ -160,9 +160,9 @@ class CPlayer:
             self.x = self.x - 10
         if self.CurAni == 'JUMP'and self.m_bisJump == True:
             if self.dir == 0:
-                self.x = self.x + 10
+                self.x = self.x + 7
             else :
-                self.x = self.x - 10
+                self.x = self.x - 7
         if self.CurAni == 'BALLON':
             if self.dir == 0:
                 self.x = self.x + 5

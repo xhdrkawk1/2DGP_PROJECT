@@ -56,7 +56,7 @@ class Boy:
 def enter():
     global  m_ObjectMgr
     m_ObjectMgr = ObjectMgr.CObjectMgr()
-    m_Player = Player.CPlayer()
+    m_Player = Player.CPlayer(200,120,1)
     m_Player.enter()
     m_ObjectMgr.Add_Object('PLAYER', m_Player)
 
