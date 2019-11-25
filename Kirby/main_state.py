@@ -25,7 +25,7 @@ m_LineMgr =None
 def enter():
     global m_LineMgr
     m_LineMgr = LineMgr.CLineMgr()
-    
+
     global  m_ObjectMgr
     m_ObjectMgr = ObjectMgr.CObjectMgr()
     m_Player = Player.CPlayer(200,120,1)
