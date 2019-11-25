@@ -7,7 +7,7 @@ class CPlayerState:
         self.PlayerState = 0 #0이면 노말
 
     def draw(self):
-            self.Image.clip_draw(0,100, 50, 50, 700,510,120,120)
-
+            #self.Image.clip_draw(0,100, 50, 50, 700,510,120,120)
+       pass
     def update(self):
         pass

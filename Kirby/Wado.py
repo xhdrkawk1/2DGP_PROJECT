@@ -25,7 +25,6 @@ class CWado:
         self.SizeX = 128
         self.SizeY = 128
         self.CurAni = 'RUN'
-        self.LineLst = [Struct.CLinePos(-30,120,800,120,0)]
         self.AniLst = {'RUN': Struct.CAniDate(0,7,0),'DAMAGE': Struct.CAniDate(0,7,1),'FLY':Struct.CAniDate(0,0,2)}
         self.m_Rect = Struct.CRect(64,64,self.x,self.y)
         self.Collision = False
@@ -42,7 +41,8 @@ class CWado:
 
     def enter(self):
         global  m_Rect
-        for lineIndex in self.LineLst:
+        LineLst = main_state.m_LineMgr.LineLst
+        for lineIndex in LineLst:
             if lineIndex.p1x < self.x and lineIndex.p2x > self.x:
                 self.pointx1 = lineIndex.p1x
                 self.pointx2 = lineIndex.p2x

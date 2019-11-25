@@ -41,8 +41,8 @@ class CPlayer:
         self.AniMationCheck()
         self.Frame_Check()
         self.Move_Check()
-        self.Jumping()
         self.LineCollision()
+        self.Jumping()
         self.m_Rect.update(self.x, self.y)
         self.CollisionMonster()
         self.m_bisDamaged=False
@@ -100,8 +100,7 @@ class CPlayer:
             self.dir = 0
         if win32api.GetAsyncKeyState(0x26)&0x8000:  #위
             if self.CurAni!='JUMP':
-               self.CurAni = 'JUMP'
-               self.m_bisJump = True
+               self.JumpingChecking()
 
         if win32api.GetAsyncKeyState(0x20) & 0x8000:  # 위
             if self.CurAni!='BlOW':
@@ -126,12 +125,11 @@ class CPlayer:
 
 
     def LineCollision(self):
-        count = 0
         Finish = False
-        for lineIndex in self.LineLst:
+        LineLst = main_state.m_LineMgr.LineLst;
+        for lineIndex in LineLst:
             if Finish == True:
                 return
-            count = count +1
             if (int(lineIndex.p1y) <= int(self.x)) and lineIndex.p2x >= int(self.x):
                 Finish=True
 
@@ -141,7 +139,11 @@ class CPlayer:
                  else:
                     self.x = lineIndex.p2x
                 elif(self.m_bisJump==False):
-                    self.y =lineIndex.p1y
+                    if(self.y>lineIndex.p1y):
+                        self.y=self.y-15
+                        if(lineIndex.p1y>self.y):
+                            self.y=lineIndex.p1y
+
 
 
                 else:
@@ -231,6 +233,21 @@ class CPlayer:
             if(main_state.m_ScrollMgr.x<0):
                 main_state.m_ScrollMgr.x =0
 
+    def JumpingChecking(self):
+        LineLst = main_state.m_LineMgr.LineLst
+        for lineIndex in LineLst:
+            if (int(lineIndex.p1x) <= int(self.x)) and lineIndex.p2x >= int(self.x):
+                if(self.dir == 0):
+                    if(lineIndex.p2x - self.x>40):
+                        self.CurAni = 'JUMP'
+                        self.m_bisJump  = True
+
+                else :
+                    if (self.x-lineIndex.p1x > 40):
+                        self.CurAni = 'JUMP'
+                        self.m_bisJump = True
+                return
+        self.CurAni='IDLE'
 
 
 

@@ -45,8 +45,8 @@ class CEatPlayer:
         self.Shooting()
         self.Frame_Check()
         self.Move_Check()
-        self.Jumping()
         self.LineCollision()
+        self.Jumping()
         self.m_Rect.update(self.x, self.y)
         self.CollisionMonster()
         self.IsScrolling()
@@ -108,22 +108,23 @@ class CEatPlayer:
                 self.frame = 0
 
     def LineCollision(self):
-        count = 0
-        Finish = False
-        for lineIndex in self.LineLst:
+        Finish =False
+        LineLst = main_state.m_LineMgr.LineLst;
+        for lineIndex in LineLst:
             if Finish == True:
                 return
-            count = count + 1
             if (int(lineIndex.p1y) <= int(self.x)) and lineIndex.p2x >= int(self.x):
                 Finish = True
-                print(count)
                 if (self.m_bisJump == False and self.y + 30 < lineIndex.p1y):
                     if (self.x < (lineIndex.p2x - lineIndex.p1x) / 2 + lineIndex.p1x):  # 중점보다크면
                         self.x = lineIndex.p1x
                     else:
                         self.x = lineIndex.p2x
                 elif (self.m_bisJump == False):
-                    self.y = lineIndex.p1y
+                    if (self.y > lineIndex.p1y):
+                        self.y = self.y - 15
+                        if (lineIndex.p1y > self.y):
+                            self.y = lineIndex.p1y
 
 
                 else:
@@ -142,9 +143,9 @@ class CEatPlayer:
             self.x = self.x - 10
         if self.CurAni == 'JUMP' and self.m_bisJump == True:
             if self.dir == 0:
-                self.x = self.x + 10
+                self.x = self.x + 5
             else:
-                self.x = self.x - 10
+                self.x = self.x - 5
 
     def Jumping(self):
         if self.m_bisJump == True:
