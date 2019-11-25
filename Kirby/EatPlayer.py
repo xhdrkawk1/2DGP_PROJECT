@@ -49,17 +49,21 @@ class CEatPlayer:
         self.LineCollision()
         self.m_Rect.update(self.x, self.y)
         self.CollisionMonster()
+        self.IsScrolling()
         self.m_bisDamaged = False
 
         return self.m_bisDead
 
     def draw(self):
+        ScrollX = main_state.m_ScrollMgr.x
+        ScrollY = main_state.m_ScrollMgr.y
+
         if self.dir == 0:
             self.imageRight.clip_draw((int)(self.frame) * 128, 1280 - (self.AniLst[self.CurAni].AniNumber + 1) * 128,
-                                      128, 128, self.x, self.y+15)
+                                      128, 128, self.x-ScrollX, self.y+15)
         else:
             self.imageLeft.clip_draw((2176 - 128) - ((int)(self.frame) * 128),
-                                     1280 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128, self.x, self.y+15)
+                                     1280 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128, self.x-ScrollX, self.y+15)
         m_PlayerState.draw()
 
     def AniMationCheck(self):
@@ -166,7 +170,23 @@ class CEatPlayer:
                 m_Star.enter()
                 main_state.m_ObjectMgr.Add_Object('BULLET', m_Star)
 
+    def IsScrolling(self):
+        fOffsetX = 400
+        fOffsetY = 300
 
+        fScrollX = main_state.m_ScrollMgr.x
+        fScrollY = main_state.m_ScrollMgr.y
+
+        MoveX = 3
+        MoveY = 3
+        print(self.x)
+
+        if (fOffsetX + 50 < self.x - fScrollX):
+            main_state.m_ScrollMgr.x = main_state.m_ScrollMgr.x + 10
+        if (fOffsetX - 50 > self.x - fScrollX):
+            main_state.m_ScrollMgr.x = main_state.m_ScrollMgr.x - 10
+            if (main_state.m_ScrollMgr.x < 0):
+                main_state.m_ScrollMgr.x = 0
 
 
 

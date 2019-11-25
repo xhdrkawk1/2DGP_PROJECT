@@ -1,5 +1,5 @@
 from pico2d import *
-from main_state import *
+import main_state
 
 
 class CStar:
@@ -34,5 +34,7 @@ class CStar:
         return self.Dead
 
     def draw(self):
-        CStar.Image.clip_draw((int)(self.frame) * 104, 0, 104, 96,self.x, self.y,70,55)
+        ScrollX = main_state.m_ScrollMgr.x
+        ScrollY = main_state.m_ScrollMgr.y
+        CStar.Image.clip_draw((int)(self.frame) * 104, 0, 104, 96,self.x-ScrollX, self.y-ScrollY,70,55)
 

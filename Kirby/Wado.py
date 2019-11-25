@@ -31,11 +31,14 @@ class CWado:
         self.Collision = False
         self.m_bisdie = False;
     def draw(self):
+        ScrollX = main_state.m_ScrollMgr.x
+        ScrollY = main_state.m_ScrollMgr.y
+
         if self.dir == 0:
             CWado.ImageR.clip_draw((int)(self.frame) * 128, 384 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,
-                                      self.x, self.y,self.SizeX,self.SizeY)
+                                      self.x-ScrollX, self.y-ScrollY,self.SizeX,self.SizeY)
         else:
-            CWado.ImageL.clip_draw((1024 - 128) - ((int)(self.frame) * 128), 384-(self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x, self.y,self.SizeX,self.SizeY)
+            CWado.ImageL.clip_draw((1024 - 128) - ((int)(self.frame) * 128), 384-(self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x-ScrollX, self.y-ScrollY,self.SizeX,self.SizeY)
 
     def enter(self):
         global  m_Rect

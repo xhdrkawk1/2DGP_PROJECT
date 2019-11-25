@@ -15,7 +15,6 @@ class CPlayer:
         self.MaxFrame = 0
         self.imageRight = load_image('Texture/Kirby.png')
         self.imageLeft = load_image('Texture/KirbyL.png')
-        self.LineLst = [Struct.CLinePos(-60, 120, 520, 120, 0), Struct.CLinePos(520, 230, 800, 230, 0)]
         self.dir = dir
         self.Eating =False
         self.fSpeed = 10
@@ -47,6 +46,7 @@ class CPlayer:
         self.m_Rect.update(self.x, self.y)
         self.CollisionMonster()
         self.m_bisDamaged=False
+        self.IsScrolling()
         if(self.Eating == True):
             self.m_bisDead=True
             m_Player = EatPlayer.CEatPlayer(self.x,self.y,self.dir)
@@ -56,10 +56,13 @@ class CPlayer:
 
         return self.m_bisDead
     def draw(self):
+        ScrollX = main_state.m_ScrollMgr.x
+        ScrollY = main_state.m_ScrollMgr.y
+
         if self.dir== 0:
-             self.imageRight.clip_draw((int)(self.frame) * 128, 2048-(self.AniLst[self.CurAni].AniNumber+1)*128, 128, 128, self.x, self.y)
+             self.imageRight.clip_draw((int)(self.frame) * 128, 2048-(self.AniLst[self.CurAni].AniNumber+1)*128, 128, 128, self.x-ScrollX, self.y-ScrollY)
         else:
-             self.imageLeft.clip_draw((2048-128)-((int)(self.frame) * 128), 2048 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x, self.y)
+             self.imageLeft.clip_draw((2048-128)-((int)(self.frame) * 128), 2048 - (self.AniLst[self.CurAni].AniNumber + 1) * 128, 128, 128,self.x-ScrollX, self.y-ScrollY)
 
         m_PlayerState.draw()
 
@@ -131,7 +134,7 @@ class CPlayer:
             count = count +1
             if (int(lineIndex.p1y) <= int(self.x)) and lineIndex.p2x >= int(self.x):
                 Finish=True
-                print(count)
+
                 if(self.m_bisJump==False and self.y+30<lineIndex.p1y):
                  if(self.x <(lineIndex.p2x-lineIndex.p1x)/2+lineIndex.p1x): #중점보다크면
                     self.x = lineIndex.p1x
@@ -210,6 +213,25 @@ class CPlayer:
                  if self.dir == 1 and self.x > n.x and Struct.CollisionDist(self.x,n.x,self.y,n.y,200):
                      self.CurAni = 'DRAIN'
                      n.m_bisdie = True
+
+    def IsScrolling(self):
+        fOffsetX = 400
+        fOffsetY = 300
+
+        fScrollX = main_state.m_ScrollMgr.x
+        fScrollY = main_state.m_ScrollMgr.y
+
+        MoveX = 3
+        MoveY = 3
+        print(self.x)
+        if(fOffsetX+50 <self.x - fScrollX):
+            main_state.m_ScrollMgr.x= main_state.m_ScrollMgr.x+10
+        if (fOffsetX - 50 > self.x - fScrollX):
+            main_state.m_ScrollMgr.x = main_state.m_ScrollMgr.x -10
+            if(main_state.m_ScrollMgr.x<0):
+                main_state.m_ScrollMgr.x =0
+
+
 
 
 
