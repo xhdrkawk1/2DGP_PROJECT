@@ -30,7 +30,7 @@ class CEatPlayer:
         self.m_bisDamaged = False
         self.m_bisShoot  =False
         self.AniLst = {'IDLE': Struct.CAniDate(0, 3, 0), 'DOWN': Struct.CAniDate(0, 5, 1),
-                       'WALK': Struct.CAniDate(0, 15, 3), 'JUMP': Struct.CAniDate(0, 4, 4),'SHOOT':Struct.CAniDate(0, 4, 6),'FJUMP':Struct.CAniDate(0, 2, 5)}
+                       'WALK': Struct.CAniDate(0, 15, 3), 'JUMP': Struct.CAniDate(0, 4, 4),'SHOOT':Struct.CAniDate(0, 4, 6),'FJUMP':Struct.CAniDate(0, 2, 5),'DAMAGED':Struct.CAniDate(0, 2, 5)}
         self.m_Rect = Struct.CRect(128, 128, self.x, self.y)
 
     def enter(self):
@@ -51,6 +51,11 @@ class CEatPlayer:
         self.CollisionMonster()
         self.IsScrolling()
         self.m_bisDamaged = False
+        if(self.CurAni=='DAMAGED'):
+            m_Player = Player.CPlayer(self.x, self.y, self.dir)
+            m_Player.enter()
+            main_state.m_ObjectMgr.Add_Object('PLAYER', m_Player)
+            self.m_bisDead=True
 
         return self.m_bisDead
 

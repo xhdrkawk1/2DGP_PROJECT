@@ -42,6 +42,10 @@ def enter():
     m_Wado.enter()
     m_ObjectMgr.Add_Object('MONSTER',m_Wado)
 
+    m_Wado = Wado.CWado(800, 120)
+    m_Wado.enter()
+    m_ObjectMgr.Add_Object('MONSTER', m_Wado)
+
     global m_ScrollMgr
     m_ScrollMgr = ScrollMgr.CScrollMgr()
 

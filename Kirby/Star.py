@@ -1,6 +1,6 @@
 from pico2d import *
 import main_state
-
+import Struct
 
 class CStar:
     Image = None
@@ -16,11 +16,12 @@ class CStar:
         self.frame = 0
         self.Count = 0
         self.Dead =False
-
+        self.m_Rect = Struct.CRect(35, 30, self.x, self.y)
     def enter(self):
         pass
 
     def update(self):
+
         self.x = self.x-(self.dir * 10)
 
         self.Count += 1
@@ -31,10 +32,22 @@ class CStar:
         if(self.frame>5):
             self.frame=0
 
+        self.m_Rect.PosX = self.x
+        self.m_Rect.PosY = self.y
+
+        self.CollisionMonster()
+
         return self.Dead
 
     def draw(self):
         ScrollX = main_state.m_ScrollMgr.x
         ScrollY = main_state.m_ScrollMgr.y
-        CStar.Image.clip_draw((int)(self.frame) * 104, 0, 104, 96,self.x-ScrollX, self.y-ScrollY,70,55)
+        CStar.Image.clip_draw((int)(self.frame) * 104, 0, 104, 96,self.x-ScrollX, self.y-ScrollY,70,60)
+
+    def CollisionMonster(self):
+        TempLst = main_state.m_ObjectMgr.Get_ObjectList('MONSTER')
+        for n in TempLst:
+            if (Struct.CollisionRect(self.m_Rect, n.m_Rect) and n.m_bisdie == False):
+                self.Dead=True
+                n.m_bisStar=True
 

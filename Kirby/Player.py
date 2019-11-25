@@ -4,7 +4,7 @@ import win32api
 import PlayerState
 import main_state
 import EatPlayer
-
+import Effect
 m_PlayerState = None
 
 
@@ -29,6 +29,10 @@ class CPlayer:
         self.AniLst = {'IDLE' : Struct.CAniDate(0,7,0),'DOWN': Struct.CAniDate(0,7,1),'WALK':Struct.CAniDate(0,9,2),'JUMP':Struct.CAniDate(0,8,4),'BLOW':Struct.CAniDate(0,13,12),'FJUMP':
                        Struct.CAniDate(0,3,5),'BALLON': Struct.CAniDate(0,12,7),'FBALLON':Struct.CAniDate(0,2,8),'DAMAGED':Struct.CAniDate(0,8,9),'DRAIN':Struct.CAniDate(0,15,13)}
         self.m_Rect = Struct.CRect(128, 128, self.x, self.y)
+        #걷기 이팩트 관련
+        self.WalkEffectCount = 0
+
+
 
     def enter(self):
         global m_PlayerState
@@ -47,6 +51,7 @@ class CPlayer:
         self.CollisionMonster()
         self.m_bisDamaged=False
         self.IsScrolling()
+        self.MakeEffect()
         if(self.Eating == True):
             self.m_bisDead=True
             m_Player = EatPlayer.CEatPlayer(self.x,self.y,self.dir)
@@ -124,6 +129,25 @@ class CPlayer:
                 self.frame=0
 
 
+    def MakeEffect(self):
+        if(self.CurAni=='WALK'):
+           self.WalkEffectCount = self.WalkEffectCount+1
+        else:
+            self.WalkEffectCount = 0
+
+        if(self.WalkEffectCount>10):
+            if(self.dir==0):
+               RunEffect = Effect.CEffect(self.x-40, self.y-30, 0,1)
+            else:
+               RunEffect = Effect.CEffect(self.x + 40, self.y - 30, 0,0)
+
+            main_state.m_ObjectMgr.Add_Object('EFFECT', RunEffect)
+            self.WalkEffectCount = 0
+
+
+
+
+
     def LineCollision(self):
         Finish = False
         LineLst = main_state.m_LineMgr.LineLst;
@@ -196,7 +220,7 @@ class CPlayer:
     def CollisionMonster(self):
         if(self.CurAni=='DAMAGED'):
             return
-
+#충돌
         TempLst = main_state.m_ObjectMgr.Get_ObjectList('MONSTER')
         for n in TempLst:
             if(Struct.CollisionRect(self.m_Rect, n.m_Rect) and n.m_bisdie==False):
@@ -206,7 +230,7 @@ class CPlayer:
                 TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
                 for n2 in TempLst2:
                     n2.change()
-
+ #흡수
         if(self.CurAni == 'BLOW'and self.frame < 11):
              for n in TempLst:
                  if self.dir==0 and self.x< n.x  and Struct.CollisionDist(self.x,n.x,self.y,n.y,200):

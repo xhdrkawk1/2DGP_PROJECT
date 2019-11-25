@@ -1,7 +1,7 @@
 from pico2d import *
 import Struct
 import main_state
-
+import Effect
 
 class CWado:
     ImageL = None
@@ -28,7 +28,8 @@ class CWado:
         self.AniLst = {'RUN': Struct.CAniDate(0,7,0),'DAMAGE': Struct.CAniDate(0,7,1),'FLY':Struct.CAniDate(0,0,2)}
         self.m_Rect = Struct.CRect(64,64,self.x,self.y)
         self.Collision = False
-        self.m_bisdie = False;
+        self.m_bisdie = False
+        self.m_bisStar = False
     def draw(self):
         ScrollX = main_state.m_ScrollMgr.x
         ScrollY = main_state.m_ScrollMgr.y
@@ -47,6 +48,7 @@ class CWado:
                 self.pointx1 = lineIndex.p1x
                 self.pointx2 = lineIndex.p2x
                 self.pointy = lineIndex.p1y
+                self.y =self.pointy
                 break
 
     def MoveWade(self):
@@ -82,7 +84,15 @@ class CWado:
 
         self.Collision = False
         self.Drain()
+
+        if(self.m_bisStar==True):
+            self.m_bisDead=True
+            PuffEffect =Effect.CEffect(self.x,self.y,1,1)
+            main_state.m_ObjectMgr.Add_Object('EFFECT', PuffEffect)
+
         return self.m_bisDead
+
+
     def MoveFrame(self):
         self.frame = self.frame + 0.3
         if(self.frame>self.Maxframe):
