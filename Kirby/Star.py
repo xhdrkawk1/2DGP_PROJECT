@@ -25,7 +25,7 @@ class CStar:
         self.x = self.x-(self.dir * 10)
 
         self.Count += 1
-        if(self.Count>70):
+        if(self.Count>50):
             self.Dead = True
 
         self.frame =self.frame+0.3

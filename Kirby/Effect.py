@@ -7,6 +7,7 @@ class CEffect:
     ImageRunL  = None
     ImagePuff = None
     ImageAbsorb = None
+    ImageAbsorbL = None
     def __init__(self,x,y,type,Compos):
         self.x = x
         self.y = y
@@ -19,8 +20,9 @@ class CEffect:
             CEffect.ImageRunL = load_image('Texture/RunL.png')
         if CEffect.ImagePuff is None and self.type == 1:
             CEffect.ImagePuff = load_image('Texture/Puff.png')
-        if CEffect.ImageAbsorb is None and self.type == 2:
+        if CEffect.ImageAbsorb is None or CEffect.ImageAbsorbL is None and self.type == 2:
             CEffect.ImageAbsorb = load_image('Texture/Absorb.png')
+            CEffect.ImageAbsorbL = load_image('Texture/AbsorbL.png')
 
         if(self.type==0):
             self.MaxFrame = 11
@@ -28,6 +30,9 @@ class CEffect:
         if(self.type==1):
             self.MaxFrame =6
             self.Speed = 0.2
+        if (self.type == 2):
+            self.MaxFrame = 16
+            self.Speed = 1.0
 
         if(self.dir==1):
             self.frame = 0
@@ -62,4 +67,12 @@ class CEffect:
         if (self.type == 1):
             CEffect.ImagePuff.clip_draw((int)(self.frame) * 192, 0, 192, 192,
                                        self.x - ScrollX, self.y - ScrollY)
+
+        if(self.type == 2):
+            if (self.dir == 1):
+              CEffect.ImageAbsorb.clip_draw((int)(self.frame) * 210, 0, 210, 210,
+                                         self.x - ScrollX, self.y - ScrollY)
+            else:
+             CEffect.ImageAbsorbL.clip_draw((int)(self.frame) * 210, 0, 210, 210,
+                                            self.x - ScrollX, self.y - ScrollY)
 

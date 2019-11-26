@@ -31,6 +31,7 @@ class CPlayer:
         self.m_Rect = Struct.CRect(128, 128, self.x, self.y)
         #걷기 이팩트 관련
         self.WalkEffectCount = 0
+        self.BlowEffectCount = 0
 
 
 
@@ -135,6 +136,12 @@ class CPlayer:
         else:
             self.WalkEffectCount = 0
 
+        if(self.CurAni == 'DRAIN' or self.CurAni == 'BLOW'):
+            self.BlowEffectCount  = self.BlowEffectCount +1
+        else:
+            self.BlowEffectCount = 0
+
+
         if(self.WalkEffectCount>10):
             if(self.dir==0):
                RunEffect = Effect.CEffect(self.x-40, self.y-30, 0,1)
@@ -143,6 +150,16 @@ class CPlayer:
 
             main_state.m_ObjectMgr.Add_Object('EFFECT', RunEffect)
             self.WalkEffectCount = 0
+
+        if (self.BlowEffectCount == 1):
+            if (self.dir == 0):
+                RunEffect = Effect.CEffect(self.x+120, self.y, 2, 1)
+            else :
+                RunEffect = Effect.CEffect(self.x -120, self.y, 2, 0)
+            main_state.m_ObjectMgr.Add_Object('EFFECT', RunEffect)
+
+
+
 
 
 
@@ -240,13 +257,15 @@ class CPlayer:
                      self.CurAni = 'DRAIN'
                      n.m_bisdie = True
 
+
+
     def IsScrolling(self):
         fOffsetX = 400
         fOffsetY = 300
 
         fScrollX = main_state.m_ScrollMgr.x
         fScrollY = main_state.m_ScrollMgr.y
-
+        print(fScrollX)
         MoveX = 3
         MoveY = 3
         print(self.x)
@@ -256,7 +275,8 @@ class CPlayer:
             main_state.m_ScrollMgr.x = main_state.m_ScrollMgr.x -10
             if(main_state.m_ScrollMgr.x<0):
                 main_state.m_ScrollMgr.x =0
-
+            if (main_state.m_ScrollMgr.x > 3140):
+                main_state.m_ScrollMgr.x = 3140
     def JumpingChecking(self):
         LineLst = main_state.m_LineMgr.LineLst
         for lineIndex in LineLst:
@@ -272,6 +292,7 @@ class CPlayer:
                         self.m_bisJump = True
                 return
         self.CurAni='IDLE'
+
 
 
 

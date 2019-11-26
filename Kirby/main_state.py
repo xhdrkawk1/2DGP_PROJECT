@@ -38,11 +38,23 @@ def enter():
     m_PlayerHp = PlayerHp.CPlayerHp()
     m_ObjectMgr.Add_Object('UI', m_PlayerHp)
 
-    m_Wado =Wado.CWado(100,120)
+    m_Wado =Wado.CWado(2500,120)
     m_Wado.enter()
     m_ObjectMgr.Add_Object('MONSTER',m_Wado)
 
     m_Wado = Wado.CWado(800, 120)
+    m_Wado.enter()
+    m_ObjectMgr.Add_Object('MONSTER', m_Wado)
+
+    m_Wado = Wado.CWado(3000, 120)
+    m_Wado.enter()
+    m_ObjectMgr.Add_Object('MONSTER', m_Wado)
+
+    m_Wado = Wado.CWado(1400, 120)
+    m_Wado.enter()
+    m_ObjectMgr.Add_Object('MONSTER', m_Wado)
+
+    m_Wado = Wado.CWado(2000, 120)
     m_Wado.enter()
     m_ObjectMgr.Add_Object('MONSTER', m_Wado)
 
