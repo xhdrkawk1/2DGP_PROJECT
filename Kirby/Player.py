@@ -265,7 +265,6 @@ class CPlayer:
 
         fScrollX = main_state.m_ScrollMgr.x
         fScrollY = main_state.m_ScrollMgr.y
-        print(fScrollX)
         MoveX = 3
         MoveY = 3
         print(self.x)

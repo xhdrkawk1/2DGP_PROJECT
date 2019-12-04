@@ -18,7 +18,7 @@ class CStage1:
         if(self.Stage==0):
             self.Image.clip_draw(10 + (int)(ScrollX * 0.29), 60, 200, 150, 400, 300, 800, 600)
         if(self.Stage==1):
-            self.Image2.clip_draw(10 + (int)(ScrollX * 0.29), 700, 800, 600, 400, 300, 800, 600)
+            self.Image2.clip_draw(10 + (int)(ScrollX), 700, 800, 600, 400, 300, 800, 600)
 
 
     def update(self):
@@ -28,8 +28,15 @@ class CStage1:
             if(PlayerX>3550 and PlayerX<3620 and  win32api.GetAsyncKeyState(0x41) & 0x8000 ):
                  self.Stage = 1
                  main_state.m_ScrollMgr.resetScroll()
+                 main_state.m_LineMgr.LineChange()
                  TempLst[0].x = 400
                  TempLst[0].y = 120
+            if(win32api.GetAsyncKeyState(0x41) & 0x8000 ):
+                self.Stage = 1
+                main_state.m_ScrollMgr.resetScroll()
+                TempLst[0].x = 400
+                TempLst[0].y = 120
+                main_state.m_LineMgr.LineChange()
 
 
 
