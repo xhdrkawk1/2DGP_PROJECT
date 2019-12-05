@@ -7,18 +7,23 @@ class CStage1:
     def __init__(self):
         self.Stage = 0
         self.backGroundImage = load_image('Texture/Stage1_Back.png')
+        self.backGroundImage2 = load_image('Texture/Stage2_Back.png')
         self.Image = load_image('Texture/Stage1.png')
         self.Image2 = load_image('Texture/Stage2.png')
+
 
     def draw(self):
         ScrollX = main_state.m_ScrollMgr.x
         ScrollY = main_state.m_ScrollMgr.y
 
-        self.backGroundImage.draw(400,300)
+
         if(self.Stage==0):
+            self.backGroundImage.draw(400, 300)
             self.Image.clip_draw(10 + (int)(ScrollX * 0.29), 60, 200, 150, 400, 300, 800, 600)
+
         if(self.Stage==1):
-            self.Image2.clip_draw(10 + (int)(ScrollX), 700, 800, 600, 400, 300, 800, 600)
+            self.backGroundImage2.draw(400, 300)
+            self.Image2.clip_draw(10 + (int)(ScrollX*0.5), 150, 400, 300, 400,300, 800, 600)
 
 
     def update(self):

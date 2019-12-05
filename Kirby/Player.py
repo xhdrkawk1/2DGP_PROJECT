@@ -224,7 +224,7 @@ class CPlayer:
     def Jumping(self):
         if self.m_bisJump == True :
             if self.CurAni == 'BALLON':
-                self.fJumpAcc = 0.5
+                self.fJumpAcc = 0.4
                 self.y = self.y-self.fJumpAcc
             elif self.CurAni == 'FBALLON':
                 self.fJumpAcc = 30.0
@@ -244,6 +244,15 @@ class CPlayer:
                 self.CurAni = 'DAMAGED'
                 self.frame = 0
                 n.Collision = True
+                TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
+                for n2 in TempLst2:
+                    n2.change()
+
+        TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('BOSS')
+        for n in TempLst2:
+            if (Struct.CollisionRect(self.m_Rect, n.m_Rect)):
+                self.CurAni = 'DAMAGED'
+                self.frame = 0
                 TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
                 for n2 in TempLst2:
                     n2.change()
@@ -267,15 +276,18 @@ class CPlayer:
         fScrollY = main_state.m_ScrollMgr.y
         MoveX = 3
         MoveY = 3
-        print(self.x)
+
+        print(main_state.m_ScrollMgr.x)
         if(fOffsetX+50 <self.x - fScrollX):
             main_state.m_ScrollMgr.x= main_state.m_ScrollMgr.x+10
         if (fOffsetX - 50 > self.x - fScrollX):
             main_state.m_ScrollMgr.x = main_state.m_ScrollMgr.x -10
-            if(main_state.m_ScrollMgr.x<0):
-                main_state.m_ScrollMgr.x =0
-            if (main_state.m_ScrollMgr.x > 3140):
-                main_state.m_ScrollMgr.x = 3140
+        if(main_state.m_ScrollMgr.x<0):
+            main_state.m_ScrollMgr.x =0
+        if (main_state.m_ScrollMgr.x > 3140 and main_state.m_LineMgr.stage==0):
+             main_state.m_ScrollMgr.x = 3140
+        if (main_state.m_ScrollMgr.x > 1220 and main_state.m_LineMgr.stage == 1):
+             main_state.m_ScrollMgr.x = 1220
     def JumpingChecking(self):
         LineLst = main_state.m_LineMgr.LineLst
         for lineIndex in LineLst:

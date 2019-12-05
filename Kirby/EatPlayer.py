@@ -186,17 +186,20 @@ class CEatPlayer:
 
         fScrollX = main_state.m_ScrollMgr.x
         fScrollY = main_state.m_ScrollMgr.y
-
         MoveX = 3
         MoveY = 3
-        print(self.x)
 
+        print(main_state.m_ScrollMgr.x)
         if (fOffsetX + 50 < self.x - fScrollX):
             main_state.m_ScrollMgr.x = main_state.m_ScrollMgr.x + 10
         if (fOffsetX - 50 > self.x - fScrollX):
             main_state.m_ScrollMgr.x = main_state.m_ScrollMgr.x - 10
-            if (main_state.m_ScrollMgr.x < 0):
-                main_state.m_ScrollMgr.x = 0
+        if (main_state.m_ScrollMgr.x < 0):
+            main_state.m_ScrollMgr.x = 0
+        if (main_state.m_ScrollMgr.x > 3140 and main_state.m_LineMgr.stage == 0):
+            main_state.m_ScrollMgr.x = 3140
+        if (main_state.m_ScrollMgr.x > 1220 and main_state.m_LineMgr.stage == 1):
+            main_state.m_ScrollMgr.x = 1220
 
     def MakeEffect(self):
         if (self.CurAni == 'WALK'):
