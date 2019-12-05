@@ -16,10 +16,11 @@ class CKnight:
         self.PreAni = 'IDLE'
         self.AniStop = True
         self.CurAni = 'IDLE'
-        self.AniLst ={'IDLE' : Struct.CAniDate(0,16,0),'WALK' :  Struct.CAniDate(0,7,1),}
+        self.AniLst ={'IDLE' : Struct.CAniDate(0,16,0),'WALK' :  Struct.CAniDate(0,7,1),'ATTACK' :  Struct.CAniDate(0,11,2)}
         self.CheckPlayer =False
         self.Dead=False
         self.m_Rect = Struct.CRect(99, 69, self.x, self.y)
+        self.SkillCount = 0
 
 
     def update(self):
@@ -56,10 +57,13 @@ class CKnight:
             return
 
 
-        self.frame += 0.15
+        self.frame += 0.3
         if(self.frame>self.AniLst[self.CurAni].MaxFrame):
             if(self.CurAni == 'IDLE'):
                 self.CurAni ='WALK'
+            if(self.CurAni == 'ATTACK'):
+                self.CurAni = 'WALK'
+                self.SkillCount = 0
 
             self.frame = 0
 
@@ -78,5 +82,12 @@ class CKnight:
                 self.dir =0
             else:
                 self.dir =1
+            self.SkillCount =self.SkillCount +1
+
+        if(self.SkillCount == 100):
+            self.CurAni = 'ATTACK'
+
+
+
 
 
