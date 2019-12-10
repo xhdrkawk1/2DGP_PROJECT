@@ -14,18 +14,18 @@ class CKnight:
         self.imageRight = load_image('Texture/KnightR.png')
         self.imageLeft = load_image('Texture/KnightL.png')
         self.dir = 1
-        self.hp = 10
+        self.hp = 3
         self.PreAni = 'IDLE'
         self.AniStop = True
         self.CurAni = 'IDLE'
-        self.AniLst ={'IDLE' : Struct.CAniDate(0,16,0),'WALK' :  Struct.CAniDate(0,7,1),'ATTACK2' :  Struct.CAniDate(0,11,2),
-                      'ATTACK':Struct.CAniDate(0,15,7)}
+        self.AniLst ={'IDLE' : Struct.CAniDate(0,16,0),'WALK' :  Struct.CAniDate(0,7,1),'ATTACK' :  Struct.CAniDate(0,11,2),
+                      'ATTACK2':Struct.CAniDate(0,15,7), 'FINISH':Struct.CAniDate(0,25,8)}
         self.CheckPlayer =False
         self.Dead=False
         self.m_Rect = Struct.CRect(99, 69, self.x, self.y)
         self.SkillCount = 0
         self.WadoCount = 0
-        self.hp = 10
+
 
 
     def update(self):
@@ -36,7 +36,7 @@ class CKnight:
         self.m_Rect.update(self.x, self.y-80)
         self.MakeSlash()
         self.MakeWado()
-
+        self.DeadCheck()
         self.PreAni = self.CurAni
         return self.Dead
 
@@ -65,21 +65,29 @@ class CKnight:
         if(self.AniStop==True):
             return
 
+        if(self.CurAni!='FINISH'):
+            self.frame += 0.3
+        else:
+            self.frame += 0.15
 
-        self.frame += 0.3
         if(self.frame>self.AniLst[self.CurAni].MaxFrame):
             if(self.CurAni == 'IDLE'):
                 self.CurAni ='WALK'
             if(self.CurAni == 'ATTACK'):
                 self.CurAni = 'WALK'
                 self.SkillCount = 0
-
+            if (self.CurAni == 'FINISH'):
+                self.Dead = True
             self.frame = 0
 
     def change(self):
         pass
 
     def MotionCheck(self):
+        if self.hp<=0:
+            return
+
+
         if self.CurAni =='WALK':
             if(self.dir == 0):
                 self.x = self.x + 1.5
@@ -102,6 +110,9 @@ class CKnight:
 
 
     def MakeWado(self):
+        if(self.CurAni=='FINISH'):
+            return
+
         self.WadoCount=self.WadoCount+1
         if(self.WadoCount > 200):
 
@@ -116,8 +127,13 @@ class CKnight:
             main_state.m_ObjectMgr.Add_Object('MONSTER', Mon1)
             self.WadoCount = 0
 
-
-
-
+    def DeadCheck(self):
+        if(self.PreAni != 'FINISH'and self.hp<=0):
+            self.CurAni ='FINISH'
+            self.frame = 0
+            TempLst = main_state.m_ObjectMgr.Get_ObjectList('MONSTER')
+            for n in TempLst:
+                if (Struct.CollisionRect(self.m_Rect, n.m_Rect) and n.m_bisdie == False):
+                    n.m_bisStar = True
 
 
