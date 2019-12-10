@@ -1,6 +1,7 @@
 import Struct
 import main_state
 import Knight
+import BossHp
 
 class CLineMgr :
     def __init__(self):
@@ -16,5 +17,7 @@ class CLineMgr :
         self.stage = 1
         Boss = Knight.CKnight()
         main_state.m_ObjectMgr.Add_Object('BOSS', Boss)
+        tBossHp = BossHp.CBossHp()
+        main_state.m_ObjectMgr.Add_Object('UI', tBossHp)
 
 

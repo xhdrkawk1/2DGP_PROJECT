@@ -18,13 +18,14 @@ class CKnight:
         self.PreAni = 'IDLE'
         self.AniStop = True
         self.CurAni = 'IDLE'
-        self.AniLst ={'IDLE' : Struct.CAniDate(0,16,0),'WALK' :  Struct.CAniDate(0,7,1),'ATTACK' :  Struct.CAniDate(0,11,2)}
+        self.AniLst ={'IDLE' : Struct.CAniDate(0,16,0),'WALK' :  Struct.CAniDate(0,7,1),'ATTACK2' :  Struct.CAniDate(0,11,2),
+                      'ATTACK':Struct.CAniDate(0,15,7)}
         self.CheckPlayer =False
         self.Dead=False
         self.m_Rect = Struct.CRect(99, 69, self.x, self.y)
         self.SkillCount = 0
         self.WadoCount = 0
-        self.hp = 5
+        self.hp = 10
 
 
     def update(self):
