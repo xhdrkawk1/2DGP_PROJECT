@@ -7,13 +7,13 @@ class CWado:
     ImageL = None
     ImageR = None
 
-    def __init__(self, x, y):
+    def __init__(self, x, y,dir):
 
         if CWado.ImageL is None and CWado.ImageR is None:
             CWado.ImageL = load_image('Texture/WadoL.png')
             CWado.ImageR = load_image('Texture/WadoR.png')
 
-        self.dir = 0
+        self.dir = dir
         self.x = x
         self.y = y
         self.pointx1 = 0

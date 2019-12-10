@@ -72,6 +72,7 @@ class CPlayer:
 
         m_PlayerState.draw()
 
+
     def AniMationCheck(self):
         if self.CurAni!= self.PreAni:
             self.frame = 0
@@ -256,6 +257,17 @@ class CPlayer:
                 TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
                 for n2 in TempLst2:
                     n2.change()
+
+        TempLst3 = main_state.m_ObjectMgr.Get_ObjectList('BOSSBULLET')
+        for n in TempLst3:
+            if (Struct.CollisionRect(self.m_Rect, n.m_Rect) and n.Dead == False):
+                self.CurAni = 'DAMAGED'
+                self.frame = 0
+                n.Dead = True
+                TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
+                for n2 in TempLst2:
+                    n2.change()
+
  #흡수
         if(self.CurAni == 'BLOW'and self.frame < 11):
              for n in TempLst:

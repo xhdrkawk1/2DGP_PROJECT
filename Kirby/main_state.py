@@ -39,7 +39,7 @@ def enter():
     m_ObjectMgr.Add_Object('UI', m_PlayerHp)
 
 
-    Mon1 = Wado.CWado(500,120)
+    Mon1 = Wado.CWado(500,120,0)
     Mon1.enter()
     m_ObjectMgr.Add_Object('MONSTER', Mon1)
 

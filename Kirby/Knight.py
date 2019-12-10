@@ -2,6 +2,7 @@ from pico2d import *
 import Struct
 import main_state
 import Effect
+import Slash
 
 class CKnight:
     def __init__(self):
@@ -29,6 +30,10 @@ class CKnight:
         self.FrameCheck()
         self.MotionCheck()
         self.m_Rect.update(self.x, self.y-80)
+        self.MakeSlash()
+        self.MakeWado()
+
+        self.PreAni = self.CurAni
         return self.Dead
 
 
@@ -86,8 +91,14 @@ class CKnight:
 
         if(self.SkillCount == 100):
             self.CurAni = 'ATTACK'
+    def MakeSlash(self):
+        if(self.CurAni =='ATTACK' and self.PreAni != 'ATTACK'):
+            Attack = Slash.CSlash(self.x,self.y-65,self.dir)
+            main_state.m_ObjectMgr.Add_Object('BOSSBULLET',Attack)
 
 
+    def MakeWado(self):
+        
 
 
 
