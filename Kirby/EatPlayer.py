@@ -172,6 +172,24 @@ class CEatPlayer:
                 TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
                 for n2 in TempLst2:
                    n2.change()
+        TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('BOSS')
+        for n in TempLst2:
+            if (Struct.CollisionRect(self.m_Rect, n.m_Rect)):
+                self.CurAni = 'DAMAGED'
+                self.frame = 0
+                TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
+                for n2 in TempLst2:
+                    n2.change()
+
+        TempLst3 = main_state.m_ObjectMgr.Get_ObjectList('BOSSBULLET')
+        for n in TempLst3:
+            if (Struct.CollisionRect(self.m_Rect, n.m_Rect) and n.Dead == False):
+                self.CurAni = 'DAMAGED'
+                self.frame = 0
+                n.Dead = True
+                TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
+                for n2 in TempLst2:
+                    n2.change()
     def Shooting(self):
         if(self.CurAni =='SHOOT'):
             if(self.frame >=2 and self.m_bisShoot ==False):

@@ -3,7 +3,8 @@ import Struct
 import main_state
 import Effect
 import Slash
-
+import random
+import Wado
 class CKnight:
     def __init__(self):
         self.x = 1300
@@ -22,6 +23,8 @@ class CKnight:
         self.Dead=False
         self.m_Rect = Struct.CRect(99, 69, self.x, self.y)
         self.SkillCount = 0
+        self.WadoCount = 0
+        self.hp = 5
 
 
     def update(self):
@@ -78,9 +81,9 @@ class CKnight:
     def MotionCheck(self):
         if self.CurAni =='WALK':
             if(self.dir == 0):
-                self.x = self.x + 2
+                self.x = self.x + 1.5
             else :
-                self.x = self.x -2
+                self.x = self.x -1.5
             TempLst = main_state.m_ObjectMgr.Get_ObjectList('PLAYER')
             PlayerX = TempLst[0].x
             if(PlayerX>self.x):
@@ -89,7 +92,7 @@ class CKnight:
                 self.dir =1
             self.SkillCount =self.SkillCount +1
 
-        if(self.SkillCount == 100):
+        if(self.SkillCount == 200):
             self.CurAni = 'ATTACK'
     def MakeSlash(self):
         if(self.CurAni =='ATTACK' and self.PreAni != 'ATTACK'):
@@ -98,7 +101,22 @@ class CKnight:
 
 
     def MakeWado(self):
-        
+        self.WadoCount=self.WadoCount+1
+        if(self.WadoCount > 200):
+
+            rand = random.randint(0,1)
+
+            if(rand==1):
+               Mon1 = Wado.CWado(0, 120, 0)
+            else:
+               Mon1 = Wado.CWado(2000, 120, 1)
+
+            Mon1.enter()
+            main_state.m_ObjectMgr.Add_Object('MONSTER', Mon1)
+            self.WadoCount = 0
+
+
+
 
 
 

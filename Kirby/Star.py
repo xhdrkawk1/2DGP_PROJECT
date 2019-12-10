@@ -1,7 +1,7 @@
 from pico2d import *
 import main_state
 import Struct
-
+import Effect
 class CStar:
     Image = None
 
@@ -22,10 +22,10 @@ class CStar:
 
     def update(self):
 
-        self.x = self.x-(self.dir * 10)
+        self.x = self.x-(self.dir * 20)
 
         self.Count += 1
-        if(self.Count>50):
+        if(self.Count>25):
             self.Dead = True
 
         self.frame =self.frame+0.3
@@ -50,4 +50,15 @@ class CStar:
             if (Struct.CollisionRect(self.m_Rect, n.m_Rect) and n.m_bisdie == False):
                 self.Dead=True
                 n.m_bisStar=True
+
+        TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('BOSS')
+        for n in TempLst2:
+            if (Struct.CollisionRect(self.m_Rect, n.m_Rect) and n.Dead == False):
+                self.Dead = True
+                n.hp = n.hp-1
+                PuffEffect = Effect.CEffect(self.x, self.y, 1, 1)
+                main_state.m_ObjectMgr.Add_Object('EFFECT', PuffEffect)
+
+
+
 
