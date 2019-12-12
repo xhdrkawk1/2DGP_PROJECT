@@ -29,10 +29,19 @@ class CPlayer:
         self.AniLst = {'IDLE' : Struct.CAniDate(0,7,0),'DOWN': Struct.CAniDate(0,7,1),'WALK':Struct.CAniDate(0,9,2),'JUMP':Struct.CAniDate(0,8,4),'BLOW':Struct.CAniDate(0,13,12),'FJUMP':
                        Struct.CAniDate(0,3,5),'BALLON': Struct.CAniDate(0,12,7),'FBALLON':Struct.CAniDate(0,2,8),'DAMAGED':Struct.CAniDate(0,8,9),'DRAIN':Struct.CAniDate(0,15,13)}
         self.m_Rect = Struct.CRect(128, 128, self.x, self.y)
+
         #걷기 이팩트 관련
         self.WalkEffectCount = 0
         self.BlowEffectCount = 0
 
+        self.WalkSound = load_wav('Sound/Dash.wav')
+        self.WalkSound.set_volume(30)
+        self.JumpSound = load_wav('Sound/Jump.wav')
+        self.JumpSound.set_volume(40)
+
+        self.FlySound = load_wav('Sound/Fly.wav')
+        self.FlySound.set_volume(40)
+        self.FlyCount =0
 
 
     def enter(self):
@@ -41,7 +50,7 @@ class CPlayer:
         pass
 
     def update(self):
-
+        print(self.x)
         self.Key_Input()
         self.AniMationCheck()
         self.Frame_Check()
@@ -107,6 +116,7 @@ class CPlayer:
             self.dir = 0
         if win32api.GetAsyncKeyState(0x26)&0x8000:  #위
             if self.CurAni!='JUMP':
+               self.JumpSound.play()
                self.JumpingChecking()
 
         if win32api.GetAsyncKeyState(0x20) & 0x8000:  # 위
@@ -123,6 +133,7 @@ class CPlayer:
             elif self.CurAni == 'FJUMP':
                   self.CurAni = 'IDLE'
             elif self.CurAni == 'BALLON':
+                self.FlySound.play()
                 self.frame=6
             elif self.CurAni =='DAMAGED':
                 self.frame = 0
@@ -144,6 +155,7 @@ class CPlayer:
 
 
         if(self.WalkEffectCount>10):
+            self.WalkSound.play()
             if(self.dir==0):
                RunEffect = Effect.CEffect(self.x-40, self.y-30, 0,1)
             else:
@@ -211,6 +223,7 @@ class CPlayer:
             else :
                 self.x = self.x - 7
         if self.CurAni == 'BALLON':
+
             if self.dir == 0:
                 self.x = self.x + 5
             else :
@@ -263,7 +276,6 @@ class CPlayer:
             if (Struct.CollisionRect(self.m_Rect, n.m_Rect) and n.Dead == False):
                 self.CurAni = 'DAMAGED'
                 self.frame = 0
-                n.Dead = True
                 TempLst2 = main_state.m_ObjectMgr.Get_ObjectList('UI')
                 for n2 in TempLst2:
                     n2.change()

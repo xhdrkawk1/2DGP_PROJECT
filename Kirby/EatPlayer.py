@@ -36,6 +36,15 @@ class CEatPlayer:
         # 걷기 이팩트 관련
         self.WalkEffectCount = 0
 
+        self.WalkSound = load_wav('Sound/Dash.wav')
+        self.WalkSound.set_volume(30)
+
+        self.JumpSound = load_wav('Sound/Jump.wav')
+        self.JumpSound.set_volume(40)
+
+        self.ShootStarSound = load_wav('Sound/ShootStar.wav')
+        self.ShootStarSound.set_volume(40)
+
     def enter(self):
         global m_PlayerState
         m_PlayerState = PlayerState.CPlayerState()
@@ -98,6 +107,7 @@ class CEatPlayer:
             self.dir = 0
         if win32api.GetAsyncKeyState(0x26) & 0x8000:  # 위
             if self.CurAni != 'JUMP':
+                self.JumpSound.play()
                 self.CurAni = 'JUMP'
                 self.m_bisJump = True
         if win32api.GetAsyncKeyState(0x41) & 0x8000:
@@ -194,6 +204,7 @@ class CEatPlayer:
         if(self.CurAni =='SHOOT'):
             if(self.frame >=2 and self.m_bisShoot ==False):
                 self.m_bisShoot = True
+                self.ShootStarSound.play()
                 m_Star = Star.CStar(self.x, self.y, self.dir)
                 m_Star.enter()
                 main_state.m_ObjectMgr.Add_Object('BULLET', m_Star)
@@ -226,6 +237,7 @@ class CEatPlayer:
             self.WalkEffectCount = 0
 
         if (self.WalkEffectCount > 10):
+            self.WalkSound.play()
             if (self.dir == 0):
                 RunEffect = Effect.CEffect(self.x - 40, self.y - 30, 0, 1)
             else:

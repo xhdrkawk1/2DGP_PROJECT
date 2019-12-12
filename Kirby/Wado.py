@@ -30,6 +30,8 @@ class CWado:
         self.Collision = False
         self.m_bisdie = False
         self.m_bisStar = False
+        self.DeadSound= load_wav('Sound/Dead.wav')
+
     def draw(self):
         ScrollX = main_state.m_ScrollMgr.x
         ScrollY = main_state.m_ScrollMgr.y
@@ -89,6 +91,8 @@ class CWado:
             self.m_bisDead=True
             PuffEffect =Effect.CEffect(self.x,self.y,1,1)
             main_state.m_ObjectMgr.Add_Object('EFFECT', PuffEffect)
+            self.DeadSound.play()
+
 
         return self.m_bisDead
 

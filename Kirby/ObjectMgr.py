@@ -3,7 +3,7 @@ import game_framework
 
 class CObjectMgr:
     def __init__(self):
-        self.ObjLst = {'MAP': [], 'PLAYER': [],'BOSS':[],'MONSTER':[], 'BULLET':[],'BOSSBULLET':[],'EFFECT':[], 'UI': []}
+        self.ObjLst = {'MAP': [], 'PLAYER': [],'BOSS':[],'MONSTER':[], 'BULLET':[],'BOSSBULLET':[],'EFFECT':[], 'UI': [],'END':[]}
 
     def Update_Object(self):
         for index in self.ObjLst:

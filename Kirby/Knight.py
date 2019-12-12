@@ -5,6 +5,7 @@ import Effect
 import Slash
 import random
 import Wado
+import GameOver
 class CKnight:
     def __init__(self):
         self.x = 1300
@@ -14,7 +15,8 @@ class CKnight:
         self.imageRight = load_image('Texture/KnightR.png')
         self.imageLeft = load_image('Texture/KnightL.png')
         self.dir = 1
-        self.hp = 3
+        self.hp = 5
+        self.prehp= self.hp
         self.PreAni = 'IDLE'
         self.AniStop = True
         self.CurAni = 'IDLE'
@@ -25,8 +27,11 @@ class CKnight:
         self.m_Rect = Struct.CRect(99, 69, self.x, self.y)
         self.SkillCount = 0
         self.WadoCount = 0
+        self.AttackSound = load_wav('Sound/Sword_Att.wav')
+        self.AttackSound.set_volume(30)
 
-
+        self.DeadSound = load_wav('Sound/Dead.wav')
+        self.DeadSound.set_volume(30)
 
     def update(self):
 
@@ -38,6 +43,14 @@ class CKnight:
         self.MakeWado()
         self.DeadCheck()
         self.PreAni = self.CurAni
+        if(self.Dead==True):
+            GameO = GameOver.CGameover()
+            main_state.m_ObjectMgr.Add_Object('END', GameO)
+        if(  self.prehp != self.hp):
+            self.DeadSound.play()
+
+
+        self.prehp = self.hp
         return self.Dead
 
 
@@ -107,6 +120,7 @@ class CKnight:
         if(self.CurAni =='ATTACK' and self.PreAni != 'ATTACK'):
             Attack = Slash.CSlash(self.x,self.y-65,self.dir)
             main_state.m_ObjectMgr.Add_Object('BOSSBULLET',Attack)
+            self.AttackSound.play()
 
 
     def MakeWado(self):

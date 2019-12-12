@@ -11,6 +11,7 @@ import ObjectMgr
 import ScrollMgr
 import LineMgr
 import Wado
+import GameOver
 
 name = "MainState"
 
@@ -33,18 +34,31 @@ def enter():
     m_ObjectMgr.Add_Object('PLAYER', m_Player)
 
     m_Stage1 = Stage1.CStage1()
+    m_Stage1.enter()
     m_ObjectMgr.Add_Object('MAP', m_Stage1)
 
     m_PlayerHp = PlayerHp.CPlayerHp()
     m_ObjectMgr.Add_Object('UI', m_PlayerHp)
 
 
-    Mon1 = Wado.CWado(500,120,0)
+
+    Mon1 = Wado.CWado(650,120,0)
     Mon1.enter()
     m_ObjectMgr.Add_Object('MONSTER', Mon1)
 
 
+    Mon1 = Wado.CWado(1420, 120, 0)
+    Mon1.enter()
+    m_ObjectMgr.Add_Object('MONSTER', Mon1)
 
+
+    Mon1 = Wado.CWado(1820, 120, 0)
+    Mon1.enter()
+    m_ObjectMgr.Add_Object('MONSTER', Mon1)
+
+    Mon1 = Wado.CWado(2780, 120, 0)
+    Mon1.enter()
+    m_ObjectMgr.Add_Object('MONSTER', Mon1)
 
     global m_ScrollMgr
     m_ScrollMgr = ScrollMgr.CScrollMgr()
@@ -84,3 +98,4 @@ def draw():
     clear_canvas()
     m_ObjectMgr.Draw_Object()
     update_canvas()
+
